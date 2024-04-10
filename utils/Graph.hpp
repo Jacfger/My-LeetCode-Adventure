@@ -6,21 +6,11 @@
 #include <vector>
 
 template <typename T> class Graph {
-public:
-  std::map<T, std::list<T>> adj_list;
-  Graph(bool directed = false) : isDirected(false) {}
-  void add_node(T a, T b) {
-    adj_list[a].push_back(b);
-    if (!isDirected) {
-      adj_list[b].push_back(a);
-    }
-  }
-
-  bool exist(T n) { return adj_list.find(n) != adj_list.end(); }
-
-  void remove_node_adjlist(T a, T b) {
+private:
+  void __remove_node_adjlist(T a, T b) {
     if (!exist(b))
       return;
+    num_nodes--;
     for (auto &&node : adj_list[b]) {
       auto remove_ =
           std::remove(adj_list[node].begin(), adj_list[node].end(), b);
@@ -32,6 +22,21 @@ public:
     }
     adj_list.erase(b);
   }
+
+  void __add_node_adjlist(T a, T b) {
+    num_nodes++;
+    adj_list[a].push_back(b);
+    if (!isDirected) {
+      adj_list[b].push_back(a);
+    }
+  }
+
+public:
+  Graph(bool directed = false) : isDirected(false) {}
+
+  bool exist(T n) { return adj_list.find(n) != adj_list.end(); }
+  void addNode(T a, T b) { __add_node_adjlist(a, b); }
+  void removeNode(T a, T b) { __remove_node_adjlist(a, b); }
 
   friend std::ostream &operator<<(std::ostream &output, const Graph &g) {
     for (auto &&adj : g.adj_list) {
@@ -46,4 +51,6 @@ public:
 
 protected:
   bool isDirected;
+  std::map<T, std::list<T>> adj_list;
+  size_t num_nodes = 0;
 };

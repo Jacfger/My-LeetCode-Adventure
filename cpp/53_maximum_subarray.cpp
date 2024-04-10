@@ -1,9 +1,4 @@
-#include <iostream>
-#include <vector>
 #include "helper.h"
-#include <algorithm>
-using namespace std;
-
 class Solution
 {
 public:
